@@ -1,0 +1,5 @@
+# Shared Folder
+Shared/
+
+# .env file, as i can contain password, we don't wan't to push it
+.env
