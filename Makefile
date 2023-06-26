@@ -48,7 +48,7 @@ S					:=$(G)
 ## FUNCTION TO SET A VALUE, GIVEN A VARIABLE ON THE $(ENV_FILE)
 SET_PASS			= \
 read -p "WAITING FOR INPUT > " -s TMPVAR  ; \
-sed -i "s|^.*$(1)|$(1)=$${TMPVAR}|g" $(ENV_FILE) ; \
+sed -i "s|^.*$(1)|$(1)=\"$${TMPVAR}\"|g" $(ENV_FILE) ; \
 printf "\nvar $(G)$(1)$(RST) set to $(R)%s$(RST)\n" "$${TMPVAR}" ;
 
 define USAGE
