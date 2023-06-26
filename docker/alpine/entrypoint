@@ -1,0 +1,20 @@
+#!/bin/ash
+
+SERVICE_NAME="No Name"
+
+if [ "${DEBUG}" != "" ]; then
+	printf "debuging \x1b[38:5:39m${SERVICE_NAME}\x1b[00m \n\n"
+	printf "USERNAME %s\n" "${USERNAME}"
+	printf "USERPASS %s\n" "${USERPASS}"
+	printf "DEBUG    %s\n\n" "${DEBUG}"
+fi
+
+if [ ! -d /etc/nginx/ssl ]; then
+	printf "${SERVICE_NAME} \x1b[38:5:160mnot found\x1b[00m, initialize it\n"
+else
+	printf "${SERVICE_NAME} \x1b[38:5:76mfound\x1b[00m, Skiping initialization\n"
+fi
+
+printf "${SERVICE_NAME} \x1b[38:5:208mlaunched\x1b[00m\n"
+
+exec ${@}

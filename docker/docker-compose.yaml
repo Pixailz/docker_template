@@ -1,0 +1,71 @@
+version: "3.9"
+
+################################################################################
+# DEFAULT CONF https://stackoverflow.com/a/65522511
+
+x-healthcheck_conf: &healthcheck_conf
+      interval: 1s
+      timeout: 1s
+      retries: 50
+
+x-restart: &restart
+    restart: on-failure
+
+################################################################################
+
+services:
+
+  ##############################################################################
+  # Alpine
+  alpine:
+    container_name: alpine
+    build:
+      context: "./docker/alpine"
+      target: "packed"
+    environment:
+      - USERNAME=${USERNAME}
+      - USERPASS=${USERPASS}
+      - DEBUG=${DEBUG}
+    # ports:
+    #   - 9443:9443
+    # volumes:
+    #   - alpine:/data
+    networks:
+      main_net:
+        ipv4_address: "13.37.42.10"
+    << : *restart
+    # healthcheck:
+    #   test: [ "CMD", "pgrep", "portainer" ]
+    #   << : *healthcheck_conf
+  #
+  ##############################################################################
+
+networks:
+  ##############################################################################
+  # MAIN INTERNAL NETWORK
+  main_net:
+    name: main_net
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: main_net
+    ipam:
+      driver: default
+      config:
+        - subnet: 13.37.42.0/27
+          ip_range: 13.37.42.0/27
+          gateway: 13.37.42.1
+  #
+  ##############################################################################
+
+volumes:
+
+  ##############################################################################
+  # Alpine
+  alpine:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: ../shared/alpine
+  #
+  ##############################################################################
